@@ -15,8 +15,8 @@ export default function takeFiles(path1, path2) {
     json: (data) => JSON.parse(data),
   };
 
-  let data1 = formatDispetcher[format1](file1);
-  let data2 = formatDispetcher[format2](file2);
+  const data1 = formatDispetcher[format1](file1);
+  const data2 = formatDispetcher[format2](file2);
 
   return { data1, data2 };
 }
