@@ -2,7 +2,7 @@
 
 import { Command } from 'commander';
 import takeFiles from '../app/parser.js';
-import genDiff from '../app/main.js';
+import genDiff from '../app/diff.js';
 
 const program = new Command();
 
@@ -14,7 +14,7 @@ program
   .argument('<filepath1>')
   .argument('<filepath2>')
   .action((...args) => {
-    const [path1, path2, options, ctx] = args;
+    const [path1, path2] = args;
     const { data1, data2 } = takeFiles(path1, path2);
     console.log(genDiff(data1, data2));
   });

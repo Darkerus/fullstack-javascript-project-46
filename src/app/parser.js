@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { cwd } from 'process';
 
 export default function takeFiles(path1, path2) {
   path1 = takeFilePath(path1);
@@ -36,7 +37,7 @@ function takeFilePath(pathString) {
   if (pathString[0] === '/') mode = 'absolute';
 
   const absolutePath = path.resolve(pathString);
-  const relativePath = path.resolve(process.cwd(), pathString);
+  const relativePath = path.resolve(cwd(), pathString);
 
   return mode === 'absolute' ? absolutePath : relativePath;
 }
