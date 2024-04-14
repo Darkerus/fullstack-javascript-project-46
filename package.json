@@ -5,7 +5,8 @@
   "main": "./src/app/main.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "./src/app/main.js"
   },
   "bin": {
     "gendiff": "./src/cli/gendiff.js"
