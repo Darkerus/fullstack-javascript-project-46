@@ -1,0 +1,16 @@
+name: Testing
+run-name: ${{ github.actor }} now lint
+on: [push]
+jobs:
+  Prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+
+      - name: Linting
+        run: make lint
