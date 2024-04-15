@@ -12,5 +12,8 @@ jobs:
         with:
           node-version: 18
 
+      - name: Prepare project
+        run: make install
+
       - name: Linting
         run: make lint
