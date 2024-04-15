@@ -11,6 +11,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+
+      - name: Prepare project
+        run: make install
+
       - name: Test & publish code coverage
         uses: paambaati/codeclimate-action@v5.0.0
         env:
