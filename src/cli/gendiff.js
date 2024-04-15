@@ -1,10 +1,9 @@
-#!/usr/bin/env node
 
 import { Command } from 'commander';
 import takeFiles from '../app/parser.js';
 import genDiff from '../app/diff.js';
 
-const program = new Command();
+export const program = new Command();
 
 program
   .name('gendiff')
@@ -18,4 +17,4 @@ program
     const { data1, data2 } = takeFiles(path1, path2);
     console.log(genDiff(data1, data2));
   });
-program.parse();
+

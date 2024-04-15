@@ -28,7 +28,7 @@ export default function takeFiles(path1, path2) {
  * @property  mode
  */
 
-function takeFilePath(pathString) {
+export function takeFilePath(pathString) {
   /**
    * @type { 'relative' | 'absolute' }
    */
