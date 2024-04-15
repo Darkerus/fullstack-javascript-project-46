@@ -1,4 +1,4 @@
-name: Testing
+name: Linting
 run-name: ${{ github.actor }} now lint
 on: [push]
 jobs:
