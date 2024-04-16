@@ -7,7 +7,7 @@
   "scripts": {
     "test": "jest",
     "start": "./src/app/main.js",
-    "lint": "eslint"  
+    "lint": "eslint"
   },
   "bin": {
     "gendiff": "./src/cli/index.js"
@@ -24,6 +24,7 @@
   "homepage": "https://github.com/Darkerus/fullstack-javascript-project-46#readme",
   "dependencies": {
     "commander": "^11.1.0",
+    "js-yaml": "^4.1.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
