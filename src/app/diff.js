@@ -1,7 +1,5 @@
 import _ from 'lodash';
-
-let result = [];
-
+import formatter from './formater.js';
 /**
  *
  * @param {Record<string, any>} data1
@@ -57,7 +55,5 @@ export default function genDiff(data1, data2, depth = 0) {
 
   // MARK: FORMATER
 
-  const stringResult = diffSort;
-
-  return depth === 0 ? JSON.stringify(diffSort) : diffSort;
+  return depth === 0 ? formatter(diffSort) : diffSort;
 }
