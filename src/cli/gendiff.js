@@ -1,5 +1,4 @@
 import { Command } from 'commander';
-import takeFiles from '../app/parser.js';
 import genDiff from '../app/diff.js';
 
 export const program = new Command();
