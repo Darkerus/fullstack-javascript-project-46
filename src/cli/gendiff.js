@@ -2,8 +2,13 @@
 import { Command } from 'commander';
 import takeFiles from '../app/parser.js';
 import genDiff from '../app/diff.js';
+import formatter from '../app/stylish.js';
 
 export const program = new Command();
+
+const formatterDispatcher = {
+  'stylish': formatter
+}
 
 program
   .name('gendiff')
@@ -13,8 +18,11 @@ program
   .argument('<filepath1>')
   .argument('<filepath2>')
   .action((...args) => {
+    const { format = 'stylish' } = program.options;
+    
     const [path1, path2] = args;
     const { data1, data2 } = takeFiles(path1, path2);
-    console.log(genDiff(data1, data2));
+
+    console.log(formatterDispatcher[format](genDiff(data1, data2)));
   });
 

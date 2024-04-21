@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import formatter from './formater.js';
 /**
  *
  * @param {Record<string, any>} data1
@@ -54,6 +53,5 @@ export default function genDiff(data1, data2, depth = 0) {
   ]);
 
   // MARK: FORMATER
-
-  return depth === 0 ? formatter(diffSort) : diffSort;
+  return diffSort;
 }
