@@ -17,8 +17,8 @@ export function plain(diff) {
     const preparedValueNext = Array.isArray(valueNext)
       ? '[complex value]'
       : typeof valueNext === 'string'
-      ? `'${valueNext}'`
-      : valueNext;
+        ? `'${valueNext}'`
+        : valueNext;
 
     if (symbol === '+') result.push(`Property '${path}' was added with value: ${preparedValue}`);
     else if (symbol === '-') {

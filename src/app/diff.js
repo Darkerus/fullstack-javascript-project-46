@@ -3,16 +3,10 @@ import { stylish, plain, json } from '../formatters/index.js';
 import takeFiles from './parser.js';
 
 const formatterDispatcher = {
-  stylish: stylish,
-  plain: plain,
-  json: json,
+  stylish,
+  plain,
+  json,
 };
-
-export default function genDiff(filepath1, filepath2, formater = 'stylish') {
-  const { data1, data2 } = takeFiles(filepath1, filepath2);
-
-  return formatterDispatcher[formater](makeDiff(data1, data2));
-}
 
 /**
  *
@@ -25,24 +19,21 @@ export function makeDiff(data1, data2, depth = 0) {
 
   const diff =
     (data, symbol, depth = 0) =>
-    ([key, value]) => {
-      if (typeof value === 'object' && typeof data[key] === 'object' && !_.isNull(value) && !_.isNull(data[key]))
-        return [];
-      if (typeof value === 'object' && typeof data[key] !== 'object' && !_.isNull(value))
-        return [key, makeDiff(value, value, depth + 1), symbol, depth];
-      if (!(key in data)) return [key, value, symbol, depth];
-      else if (value !== data[key]) return [key, value, symbol, depth];
-    };
+      ([key, value]) => {
+        if (typeof value === 'object' && typeof data[key] === 'object' && !_.isNull(value) && !_.isNull(data[key])) return [];
+        if (typeof value === 'object' && typeof data[key] !== 'object' && !_.isNull(value)) return [key, makeDiff(value, value, depth + 1), symbol, depth];
+        if (!(key in data)) return [key, value, symbol, depth];
+        else if (value !== data[key]) return [key, value, symbol, depth];
+      };
 
-  const stable =
-    (data, depth = 0) =>
-    ([key, value]) => {
-      if (typeof value === 'object' && typeof data[key] === 'object' && !_.isNull(value) && !_.isNull(data[key]))
-        return [key, makeDiff(value, data2[key], depth + 1), ' ', depth];
-      if (!(key in data)) return undefined;
-      else if (value !== data[key]) return undefined;
-      else return [key, value, ' ', depth];
-    };
+  const stable = (data, depth = 0) => ([key, value]) => {
+    if (typeof value === 'object' && typeof data[key] === 'object' && !_.isNull(value) && !_.isNull(data[key])) {
+      return [key, makeDiff(value, data2[key], depth + 1), ' ', depth];
+    }
+    if (!(key in data)) return undefined;
+    else if (value !== data[key]) return undefined;
+    else return [key, value, ' ', depth];
+  };
 
   const diffMinus = arrayOfData1
     .map(diff(data2, '-', depth))
@@ -69,4 +60,10 @@ export function makeDiff(data1, data2, depth = 0) {
 
   // MARK: FORMATER
   return diffSort;
+}
+
+export default function genDiff(filepath1, filepath2, formater = 'stylish') {
+  const { data1, data2 } = takeFiles(filepath1, filepath2);
+
+  return formatterDispatcher[formater](makeDiff(data1, data2));
 }
