@@ -1,9 +1,9 @@
-import { program } from './../../src/cli/gendiff.js';
 import { expect, jest, test } from '@jest/globals';
+import { program } from '../../src/cli/gendiff.js';
 
 jest.spyOn(console, 'log');
 
-test('test cli instrument', () => {
+test('cli instrument', () => {
   let result;
 
   jest.mocked(console.log).mockImplementation((string) => {
@@ -90,7 +90,7 @@ test('e2e - json formater', () => {
   });
 
   program.parse(['', '', './__fixtures__/file1nested.json', './__fixtures__/file2nested.json', '--format', 'json']);
-  const expectData = `[{"path":"common.follow","key":"follow","process":"add","value":false},{"path":"common.setting2","key":"setting2","process":"remove","removedValue":200},{"path":"common.setting3","key":"setting3","process":"update","previousValue":null,"value":true},{"path":"common.setting4","key":"setting4","process":"add","value":"blah blah"},{"path":"common.setting5","key":"setting5","process":"add","value":"[complex value]"},{"path":"common.setting6.doge.wow","key":"wow","process":"update","previousValue":"so much","value":""},{"path":"common.setting6.ops","key":"ops","process":"add","value":"vops"},{"path":"group1.baz","key":"baz","process":"update","previousValue":"bars","value":"bas"},{"path":"group1.nest","key":"nest","process":"update","previousValue":"[complex value]","value":"[complex value]"},{"path":"group2","key":"group2","process":"remove","removedValue":"[complex value]"},{"path":"group3","key":"group3","process":"add","value":"[complex value]"}]`;
+  const expectData = '[{"path":"common.follow","key":"follow","process":"add","value":false},{"path":"common.setting2","key":"setting2","process":"remove","removedValue":200},{"path":"common.setting3","key":"setting3","process":"update","previousValue":null,"value":true},{"path":"common.setting4","key":"setting4","process":"add","value":"blah blah"},{"path":"common.setting5","key":"setting5","process":"add","value":"[complex value]"},{"path":"common.setting6.doge.wow","key":"wow","process":"update","previousValue":"so much","value":""},{"path":"common.setting6.ops","key":"ops","process":"add","value":"vops"},{"path":"group1.baz","key":"baz","process":"update","previousValue":"bars","value":"bas"},{"path":"group1.nest","key":"nest","process":"update","previousValue":"[complex value]","value":"[complex value]"},{"path":"group2","key":"group2","process":"remove","removedValue":"[complex value]"},{"path":"group3","key":"group3","process":"add","value":"[complex value]"}]';
 
   expect(result).toEqual(expectData);
 });

@@ -1,8 +1,8 @@
-import { makeDiff } from '../../src/app/diff.js';
 import { test, expect } from '@jest/globals';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { makeDiff } from '../../src/app/diff.js';
 
 test('gendiff - nested files', () => {
   const __dirname = fileURLToPath(import.meta.url);
