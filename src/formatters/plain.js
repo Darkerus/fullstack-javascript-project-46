@@ -14,7 +14,11 @@ export function plain(diff) {
     const path = acc.length === 0 ? key : acc + '.' + key;
     Array.isArray(value) ? value.flatMap((el, ind, arr) => iter(el, arr[ind + 1], path)) : void 0;
     const preparedValue = Array.isArray(value) ? '[complex value]' : typeof value === 'string' ? `'${value}'` : value;
-    const preparedValueNext = typeof valueNext === 'string' ? `'${valueNext}'` : valueNext;
+    const preparedValueNext = Array.isArray(valueNext)
+      ? '[complex value]'
+      : typeof valueNext === 'string'
+      ? `'${valueNext}'`
+      : valueNext;
 
     if (symbol === '+') result.push(`Property '${path}' was added with value: ${preparedValue}`);
     else if (symbol === '-') {
