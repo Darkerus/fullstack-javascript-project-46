@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { stylish, plain, json } from '../formatters/index.js';
+import takeFiles from './parser.js';
 
 const formatterDispatcher = {
   stylish: stylish,
@@ -7,7 +8,9 @@ const formatterDispatcher = {
   json: json,
 };
 
-export default function genDiff(data1, data2, formater = 'stylish') {
+export default function genDiff(filepath1, filepath2, formater = 'stylish') {
+  const { data1, data2 } = takeFiles(filepath1, filepath2);
+
   return formatterDispatcher[formater](makeDiff(data1, data2));
 }
 

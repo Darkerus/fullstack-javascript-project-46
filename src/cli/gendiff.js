@@ -14,6 +14,5 @@ program
   .action((...args) => {
     const { format = 'stylish' } = program.opts();
     const [path1, path2] = args;
-    const { data1, data2 } = takeFiles(path1, path2);
-    console.log(genDiff(data1, data2, format));
+    console.log(genDiff(path1, path2, format));
   });
