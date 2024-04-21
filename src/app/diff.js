@@ -1,10 +1,21 @@
 import _ from 'lodash';
+import { stylish, plain } from '../formatters/index.js';
+
+const formatterDispatcher = {
+  stylish: stylish,
+  plain: plain,
+};
+
+export default function genDiff(data1, data2, formater = 'stylish') {
+  return formatterDispatcher[formater](makeDiff(data1, data2));
+}
+
 /**
  *
  * @param {Record<string, any>} data1
  * @param {Record<string, any>} data2
  */
-export default function genDiff(data1, data2, depth = 0) {
+export function makeDiff(data1, data2, depth = 0) {
   const arrayOfData1 = Object.entries(data1);
   const arrayOfData2 = Object.entries(data2);
 
@@ -14,7 +25,7 @@ export default function genDiff(data1, data2, depth = 0) {
       if (typeof value === 'object' && typeof data[key] === 'object' && !_.isNull(value) && !_.isNull(data[key]))
         return [];
       if (typeof value === 'object' && typeof data[key] !== 'object' && !_.isNull(value))
-        return [key, genDiff(value, value, depth + 1), symbol, depth];
+        return [key, makeDiff(value, value, depth + 1), symbol, depth];
       if (!(key in data)) return [key, value, symbol, depth];
       else if (value !== data[key]) return [key, value, symbol, depth];
     };
@@ -23,7 +34,7 @@ export default function genDiff(data1, data2, depth = 0) {
     (data, depth = 0) =>
     ([key, value]) => {
       if (typeof value === 'object' && typeof data[key] === 'object' && !_.isNull(value) && !_.isNull(data[key]))
-        return [key, genDiff(value, data2[key], depth + 1), ' ', depth];
+        return [key, makeDiff(value, data2[key], depth + 1), ' ', depth];
       if (!(key in data)) return undefined;
       else if (value !== data[key]) return undefined;
       else return [key, value, ' ', depth];

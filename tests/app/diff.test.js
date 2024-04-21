@@ -1,4 +1,4 @@
-import genDiff from '../../src/app/diff.js';
+import { makeDiff } from '../../src/app/diff.js';
 import { test, expect } from '@jest/globals';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -11,6 +11,6 @@ test('gendiff - nested files', () => {
 
   const expected = JSON.parse(fs.readFileSync(path.join(__dirname, './../../../__fixtures__/result.json')));
 
-  const result = genDiff(data1, data2);
+  const result = makeDiff(data1, data2);
   expect(result).toEqual(expected);
 });

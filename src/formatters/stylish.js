@@ -1,6 +1,6 @@
 // [key, value, symbol = '-'|' '|'+', depth] - diff tupple
 import _ from 'lodash';
-export default function formatter(diff) {
+export function stylish(diff) {
   const format = (diffTupple) => {
     const [key, value, symbol, depth] = diffTupple;
     const preparedValue = Array.isArray(value) ? value.reduce((acc, cur) => acc + format(cur), '') : value;
