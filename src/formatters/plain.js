@@ -9,32 +9,29 @@ const valuePresenter = (value) => {
 };
 
 export default function plain(diff) {
-  const skip = { isSkiped: false };
-  const result = [];
-
-  const iter = (diffTupple, nextDiffTupple = [], acc = '') => {
-    if (skip.isSkiped) {
-      skip.isSkiped = false;
-      return [];
-    }
+  const iter = (diffTupple, [prevDiffTupple = [], nextDiffTupple = []] = [], acc = '') => {
     const [key, value, symbol] = diffTupple;
-    const [keyNext, valueNext, symbolNext] = nextDiffTupple;
-    const path = acc.length === 0 ? key : `${acc}.${key}`;
-    if (Array.isArray(value)) value.flatMap((el, ind, arr) => iter(el, arr[ind + 1], path));
-    const preparedValue = valuePresenter(value);
-    const preparedValueNext = valuePresenter(valueNext);
+    const [keyNext, , symbolNext] = nextDiffTupple;
+    const [keyPrev, valuePrev, symbolPrev] = prevDiffTupple;
 
-    if (symbol === '+') result.push(`Property '${path}' was added with value: ${preparedValue}`);
-    else if (symbol === '-') {
-      if (key === keyNext && symbolNext === '+') {
-        result.push(`Property '${path}' was updated. From ${preparedValue} to ${preparedValueNext}`);
-        skip.isSkiped = true;
-      } else {
-        result.push(`Property '${path}' was removed`);
+    const path = acc.length === 0 ? key : `${acc}.${key}`;
+    const deep = Array.isArray(value)
+      ? value.flatMap((el, ind, arr) => iter(el, [arr[ind - 1], arr[ind + 1]], path))
+      : [];
+    const preparedValue = valuePresenter(value);
+    const preparedValuePrev = valuePresenter(valuePrev);
+
+    if (symbol === '+') {
+      if (key === keyPrev && symbolPrev === '-') {
+        return [`Property '${path}' was updated. From ${preparedValuePrev} to ${preparedValue}`, ...deep];
       }
+      return [`Property '${path}' was added with value: ${preparedValue}`, ...deep];
     }
-    return [];
+    if (symbol === '-') {
+      if (key === keyNext && symbolNext === '+') return [...deep];
+      return [`Property '${path}' was removed`, ...deep];
+    }
+    return [...deep];
   };
-  diff.flatMap((el, ind, arr) => iter(el, arr[ind + 1]));
-  return result.join('\n');
+  return diff.flatMap((el, ind, arr) => iter(el, [arr[ind - 1], arr[ind + 1]])).join('\n');
 }

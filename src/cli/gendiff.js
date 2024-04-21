@@ -10,9 +10,8 @@ program
   .option('-f, --format <type>', 'output format (default: "stylish")')
   .argument('<filepath1>')
   .argument('<filepath2>')
-  .action((...args) => {
+  .action((path1, path2) => {
     const { format = 'stylish' } = program.opts();
-    const [path1, path2] = args;
     console.log(genDiff(path1, path2, format));
   });
 

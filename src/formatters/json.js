@@ -1,44 +1,45 @@
 export default function json(diff) {
-  let skip = false;
-  const result = [];
-
-  const iter = (diffTupple, nextDiffTupple = [], acc = '') => {
-    if (skip) {
-      skip = false;
-      return [];
-    }
+  const iter = (diffTupple, [prevDiffTupple = [], nextDiffTupple = []] = [], acc = '') => {
     const [key, value, symbol] = diffTupple;
-    const [keyNext, valueNext, symbolNext] = nextDiffTupple;
+    const [keyPrev, valuePrev, symbolPrev] = prevDiffTupple;
+    const [keyNext, , symbolNext] = nextDiffTupple;
     const path = acc.length === 0 ? key : `${acc}.${key}`;
-    if (Array.isArray(value)) value.flatMap((el, ind, arr) => iter(el, arr[ind + 1], path));
+    const deep = Array.isArray(value)
+      ? value.flatMap((el, ind, arr) => iter(
+        el,
+        [arr[ind - 1], arr[ind + 1]],
+        path,
+      )) : [];
     const preparedValue = Array.isArray(value) ? '[complex value]' : value;
-    const preparedValueNext = Array.isArray(value) ? '[complex value]' : valueNext;
-
+    const preparedValuePrev = Array.isArray(valuePrev) ? '[complex value]' : valuePrev;
     if (symbol === '+') {
-      result.push({
-        path, key, process: 'add', value: preparedValue,
-      });
-    } else if (symbol === '-') {
-      if (key === keyNext && symbolNext === '+') {
-        result.push({
+      if (key === keyPrev && symbolPrev === '-') {
+        return [{
           path,
           key,
           process: 'update',
-          previousValue: preparedValueNext,
+          previousValue: preparedValuePrev,
           value: preparedValue,
-        });
-        skip = true;
-      } else {
-        result.push({
-          path,
-          key,
-          process: 'remove',
-          removedValue: preparedValue,
-        });
+        }, ...deep];
       }
+      return [{
+        path, key, process: 'add', value: preparedValue,
+      }, ...deep];
+    } if (symbol === '-') {
+      if (key === keyNext && symbolNext === '+') return [];
+      return [{
+        path,
+        key,
+        process: 'remove',
+        removedValue: preparedValue,
+      }, ...deep];
     }
-    return [];
+    return [...deep];
   };
-  diff.flatMap((el, ind, arr) => iter(el, arr[ind + 1]));
-  return JSON.stringify(result);
+  console.log(diff.flatMap((el, ind, arr) => iter(el, arr[ind + 1])));
+
+  return JSON.stringify(diff.flatMap((el, ind, arr) => iter(
+    el,
+    [arr[ind - 1], arr[ind + 1]],
+  )));
 }
