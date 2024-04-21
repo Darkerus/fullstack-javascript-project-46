@@ -20,7 +20,7 @@ test('JSON - fileParser', () => {
   expect(data2).toEqual(expect2);
 });
 
-test('JSON - fileParser', () => {
+test('YML - fileParser', () => {
   const { expect1, expect2 } = {
     expect1: {
       host: 'hexlet.io',

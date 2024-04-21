@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 import genDiff from '../app/diff.js';
 
-export const program = new Command();
+const program = new Command();
 
 program
   .name('gendiff')
@@ -15,3 +15,5 @@ program
     const [path1, path2] = args;
     console.log(genDiff(path1, path2, format));
   });
+
+export default program;

@@ -7,7 +7,7 @@
   "scripts": {
     "test": "jest",
     "start": "./src/app/main.js",
-    "lint": "eslint"
+    "lint": "eslint ."
   },
   "bin": {
     "gendiff": "./src/cli/index.js"

@@ -1,4 +1,4 @@
-export function json(diff) {
+export default function json(diff) {
   let skip = false;
   const result = [];
 
@@ -10,7 +10,7 @@ export function json(diff) {
     const [key, value, symbol] = diffTupple;
     const [keyNext, valueNext, symbolNext] = nextDiffTupple;
     const path = acc.length === 0 ? key : `${acc}.${key}`;
-    Array.isArray(value) ? value.flatMap((el, ind, arr) => iter(el, arr[ind + 1], path)) : void 0;
+    if (Array.isArray(value)) value.flatMap((el, ind, arr) => iter(el, arr[ind + 1], path));
     const preparedValue = Array.isArray(value) ? '[complex value]' : value;
     const preparedValueNext = Array.isArray(value) ? '[complex value]' : valueNext;
 
@@ -37,6 +37,7 @@ export function json(diff) {
         });
       }
     }
+    return [];
   };
   diff.flatMap((el, ind, arr) => iter(el, arr[ind + 1]));
   return JSON.stringify(result);
