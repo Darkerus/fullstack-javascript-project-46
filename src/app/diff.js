@@ -1,9 +1,10 @@
 import _ from 'lodash';
-import { stylish, plain } from '../formatters/index.js';
+import { stylish, plain, json } from '../formatters/index.js';
 
 const formatterDispatcher = {
   stylish: stylish,
   plain: plain,
+  json: json,
 };
 
 export default function genDiff(data1, data2, formater = 'stylish') {
